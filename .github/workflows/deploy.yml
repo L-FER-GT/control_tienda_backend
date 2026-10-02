@@ -1,0 +1,65 @@
+# master = producción: despliega reglas, índices, Storage y Cloud Functions al proyecto real.
+# Requiere en el environment "produccion":
+#   - secreto FIREBASE_SERVICE_ACCOUNT_JSON (cuenta de servicio de despliegue)
+#   - variable FIREBASE_PROJECT_ID
+# Ver docs/06-despliegue-y-ci-cd.md y docs/07-credenciales.md
+name: Deploy a producción (master)
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+concurrency:
+  group: backend-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: firebase deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment: produccion
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Verificar configuración
+        env:
+          SA: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
+          PROJECT: ${{ vars.FIREBASE_PROJECT_ID }}
+        run: |
+          [ -z "$SA" ] && echo "::error::Falta el secreto FIREBASE_SERVICE_ACCOUNT_JSON" && exit 1
+          [ -z "$PROJECT" ] && echo "::error::Falta la variable FIREBASE_PROJECT_ID" && exit 1
+          exit 0
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            functions/package-lock.json
+
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Instalar dependencias
+        run: |
+          npm ci --ignore-scripts
+          npm ci --prefix functions
+
+      - name: Pruebas antes de desplegar
+        run: |
+          npm run typecheck
+          npm run test:functions
+          npm run test:rules
+
+      - name: Autenticar con Google Cloud
+        uses: google-github-actions/auth@v3
+        with:
+          credentials_json: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
+
+      - name: Desplegar
+        run: npx firebase deploy --project "${{ vars.FIREBASE_PROJECT_ID }}" --non-interactive --force
