@@ -1,0 +1,26 @@
+{
+  "name": "control-tienda-functions",
+  "description": "Cloud Functions de Control Tienda",
+  "private": true,
+  "main": "lib/index.js",
+  "engines": {
+    "node": "22"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:integration": "vitest run --config vitest.integration.config.mts",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@google-cloud/monitoring": "^6.1.1",
+    "firebase-admin": "^14.5.0",
+    "firebase-functions": "^7.4.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.19.0",
+    "typescript": "~5.9.3",
+    "vitest": "^5.0.3"
+  }
+}

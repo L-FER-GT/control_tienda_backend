@@ -1,0 +1,21 @@
+node_modules/
+lib/
+coverage/
+*.log
+firebase-debug.*.log
+firestore-debug.log
+storage-debug.log
+ui-debug.log
+database-debug.log
+pubsub-debug.log
+.firebase/
+emulator-data/
+
+# Secretos: NUNCA se versionan (ver docs/07-credenciales.md)
+.env
+.env.*
+!.env.example
+functions/.env
+functions/.env.*
+functions/.secret.local
+*service-account*.json
