@@ -1,0 +1,56 @@
+# Pruebas del backend en cada Pull Request y en las ramas feature/*:
+# tipos, pruebas unitarias, reglas de seguridad e integración con Firebase Emulator Suite.
+name: Backend CI
+
+on:
+  pull_request:
+    branches: [develop, master]
+  push:
+    branches: ["feature/**", develop]
+  workflow_dispatch:
+
+concurrency:
+  group: backend-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pruebas:
+    name: Tipos, pruebas y reglas
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            functions/package-lock.json
+
+      # Los emuladores de Firestore y Storage necesitan Java 21.
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Instalar dependencias
+        run: |
+          npm ci --ignore-scripts
+          npm ci --prefix functions
+
+      - name: Chequeo de tipos
+        run: npm run typecheck
+
+      - name: Pruebas unitarias de Cloud Functions
+        run: npm run test:functions
+
+      - name: Pruebas de reglas de seguridad (emulador)
+        run: npm run test:rules
+
+      - name: Pruebas de integración (emulador)
+        run: npm run test:integration
+
+      - name: Compilar funciones
+        run: npm run build
