@@ -1,6 +1,6 @@
 # Control Tienda — Supabase Free
 
-Backend para la app Android del repositorio hermano control_tienda_frontend. Una tienda de demostración, menos de 100 cuentas y hasta 3 usuarios simultáneos. Solo Supabase: Auth, PostgreSQL y Storage; no requiere VPS, Render, R2 ni Firebase.
+Backend para la app Android del repositorio hermano control_tienda_frontend. Dimensionado para el plan Free de Supabase: menos de 100 cuentas y hasta 3 usuarios simultáneos. Solo Supabase: Auth, PostgreSQL y Storage; no requiere VPS, Render, R2 ni Firebase.
 
 ## Puesta en marcha
 
@@ -34,4 +34,4 @@ npm test ejecuta las migraciones reales en PostgreSQL WASM (PGlite), con los esq
 - [Modelo de datos](docs/08-modelo-de-datos.md)
 - [Seguridad](docs/09-reglas-de-seguridad.md)
 
-La migración del código no transfiere automáticamente usuarios, contraseñas ni datos de un proyecto Firebase existente. Para esta demo se parte de un proyecto Supabase nuevo. Los datos remotos anteriores no se modifican; la configuración antigua se conserva únicamente en .env.firebase.backup, ignorado por Git.
+La migración del código no transfiere automáticamente usuarios, contraseñas ni datos de un proyecto Firebase existente. La versión de producción parte de un proyecto Supabase nuevo. Los datos remotos anteriores no se modifican; la configuración antigua se conserva únicamente en .env.firebase.backup, ignorado por Git.
