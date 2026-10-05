@@ -18,7 +18,7 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      # La integración GitHub de Supabase aplica las migraciones al llegar a develop.
+      # La integración GitHub de Supabase aplica las migraciones al llegar a master (producción).
       - run: npm run migrations:check
         env:
           MIGRATIONS_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
