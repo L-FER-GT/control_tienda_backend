@@ -8,4 +8,4 @@ Prueba de aceptación: crear tienda y producto con stock 20; invitar empleado y 
 
 npm run backup exporta documents a backups/ (ignorado por Git). Es un respaldo lógico de datos de negocio, no un respaldo completo: las cuentas Auth, claves y objetos Storage no se incluyen. Para recuperación completa conservar además el dump de PostgreSQL/Auth mediante las herramientas de Supabase y descargar el bucket mediante la API de Storage. Restaurar primero en un proyecto de prueba y validar IDs y permisos.
 
-No se transfiere automáticamente el contenido de Firebase ni los hashes de contraseñas. Si existen datos históricos, exportarlos y planificar el mapeo Firebase UID -> Supabase UUID antes de activar clientes reales. La demo nueva no necesita importar esos datos.
+No se transfiere automáticamente el contenido de Firebase ni los hashes de contraseñas. Si existen datos históricos, exportarlos y planificar el mapeo Firebase UID -> Supabase UUID antes de activar clientes reales. Un proyecto nuevo de producción no necesita importar esos datos.

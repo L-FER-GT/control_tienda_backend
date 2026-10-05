@@ -9,7 +9,7 @@ Lecturas: ct_query(query) aplica RLS; ct_poll(query, etag) devuelve rows=null cu
 
 Escrituras: ct_commit(operation_id, operations) valida identidad, permisos, estructura y reglas. Cada operación contiene path, kind (set/update/delete) y data. El lote es atómico. private.receipts conserva la identidad del lote para que un reintento no duplique ventas ni efectos. No borrar receipts mientras existan clientes con reintentos pendientes.
 
-Las ventas asignan correlativo y descuentan stock en la misma transacción. Editar recepciones aplica la diferencia de cantidades y genera historial de costos. Un bloqueo transaccional serializa escrituras para la demo de tres conexiones; debe revisarse antes de escalar.
+Las ventas asignan correlativo y descuentan stock en la misma transacción. Editar recepciones aplica la diferencia de cantidades y genera historial de costos. Un bloqueo transaccional serializa escrituras, adecuado para hasta tres conexiones simultáneas; debe revisarse antes de escalar.
 
 ct_call(action,payload) implementa bootstrapUser, respondInvitation, deleteAccount, adminGetUsage, adminSetUserDisabled y adminSetStoreDisabled. Las funciones privilegiadas verifican el usuario y tienen search_path fijo.
 
