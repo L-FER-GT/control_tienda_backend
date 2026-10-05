@@ -1,38 +1,26 @@
 {
   "name": "control-tienda-backend",
-  "description": "Backend serverless de Control Tienda: reglas, índices y Cloud Functions de Firebase",
   "private": true,
   "type": "module",
+  "description": "Supabase Free: Auth, PostgreSQL RPC/RLS y Storage",
   "engines": {
     "node": ">=22.12"
   },
   "scripts": {
-    "postinstall": "npm --prefix functions install --no-fund --no-audit",
-    "build": "npm --prefix functions run build",
-    "typecheck": "tsc --noEmit && npm --prefix functions run typecheck",
-    "test": "npm run test:functions && npm run test:rules && npm run test:integration",
-    "test:functions": "npm --prefix functions test",
-    "test:rules": "firebase emulators:exec --project demo-control-tienda --only firestore,storage \"vitest run --config vitest.rules.config.mts\"",
-    "test:integration": "firebase emulators:exec --project demo-control-tienda --only firestore \"npm --prefix functions run test:integration\"",
-    "emulators": "npm run build && firebase emulators:start --project demo-control-tienda --export-on-exit ./emulator-data",
-    "emulators:resume": "npm run build && firebase emulators:start --project demo-control-tienda --import ./emulator-data --export-on-exit ./emulator-data",
-    "superadmin:seed": "tsx scripts/seed-superadmin.ts",
-    "superadmin:seed:emulator": "tsx scripts/seed-superadmin.ts --emulator",
-    "monitoring:setup": "tsx scripts/setup-monitoring-alerts.ts",
-    "deploy": "firebase deploy --project prod",
-    "deploy:rules": "firebase deploy --project prod --only firestore,storage",
-    "deploy:functions": "firebase deploy --project prod --only functions"
+    "test": "node --test tests/supabase.test.mjs",
+    "build": "node scripts/check-config.mjs --allow-empty",
+    "config:check": "node scripts/check-config.mjs",
+    "db:migrate": "node scripts/migrate.mjs",
+    "superadmin:seed": "node scripts/seed-superadmin.mjs",
+    "storage:cleanup": "node scripts/cleanup-storage.mjs",
+    "backup": "node scripts/backup.mjs",
+    "test:live": "node scripts/smoke.mjs"
+  },
+  "dependencies": {
+    "dotenv": "^18.0.5",
+    "pg": "^8.16.3"
   },
   "devDependencies": {
-    "@firebase/rules-unit-testing": "^5.0.2",
-    "@google-cloud/monitoring": "^6.1.1",
-    "@types/node": "^22.19.0",
-    "dotenv": "^18.0.5",
-    "firebase": "^12.19.0",
-    "firebase-admin": "^14.5.0",
-    "firebase-tools": "^15.32.1",
-    "tsx": "^4.23.15",
-    "typescript": "~5.9.3",
-    "vitest": "^5.0.3"
+    "@electric-sql/pglite": "^0.3.14"
   }
 }

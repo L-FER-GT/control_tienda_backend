@@ -1,13 +1,15 @@
-name: Deploy Supabase
+name: Storage maintenance
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '30 8 * * *'
 permissions:
   contents: read
 jobs:
-  migrate:
+  cleanup:
+    if: vars.SUPABASE_MAINTENANCE_ENABLED == 'true'
     runs-on: ubuntu-latest
     environment: produccion
-    concurrency: supabase-migrations
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v6
@@ -15,7 +17,7 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npm test
-      - run: npm run db:migrate
+      - run: npm run storage:cleanup
         env:
-          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+          SUPABASE_URL: ${{ vars.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}

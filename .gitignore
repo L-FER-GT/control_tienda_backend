@@ -1,4 +1,8 @@
 node_modules/
+.npm-cache/
+backups/
+supabase/.temp/
+supabase/.branches/
 lib/
 coverage/
 *.log

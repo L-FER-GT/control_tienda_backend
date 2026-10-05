@@ -1,6 +1,0 @@
-{
-  "projects": {
-    "default": "demo-control-tienda",
-    "prod": "REEMPLAZAR-CON-TU-PROJECT-ID"
-  }
-}
