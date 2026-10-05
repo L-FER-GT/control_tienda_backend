@@ -51,8 +51,9 @@ test('full store lifecycle and security',async t=>{
  });
  await t.test('store creation and owner membership are atomic',async()=>{
   await as(owner);
+  await commit([update('users/'+owner,{photoPath:'users/'+owner+'/avatar.jpg'})]);
   await commit([set('stores/shop',{name:'Tienda',nameLower:'tienda',address:'Lima',isPublic:true,currency:'PEN',ownerId:owner,ownerName:'Owner',disabledBySystem:false,createdAt:1}),
-   set('stores/shop/members/'+owner,{uid:owner,role:'owner',active:true,permissions:[],displayName:'Owner',code:'0000000001'})]);
+   set('stores/shop/members/'+owner,{uid:owner,role:'owner',active:true,permissions:[],displayName:'Owner',code:'0000000001',photoPath:'users/'+owner+'/avatar.jpg'})]);
   await commit([set('stores/shop/products/p1',product)]);
   await assert.rejects(()=>commit([set('stores/shop/categories/c1',{name:'Test'}),update('users/'+owner,{isSuperadmin:true})]));
   assert.equal(await doc('stores/shop/categories/c1'),undefined);
@@ -61,12 +62,18 @@ test('full store lifecycle and security',async t=>{
   await as(owner);
   await commit([set('stores/shop/invitations/i1',{storeId:'shop',storeName:'Tienda',fromUid:owner,fromName:'Owner',toUid:employee,role:'employee',status:'pending',createdAt:1})]);
   await as(outsider);await assert.rejects(()=>rpc('respondInvitation',{storeId:'shop',invitationId:'i1',accept:true}));
-  await as(employee);assert.equal((await query({path:'users/'+employee+'/notifications'})).length,1);
+  await as(employee);
+  await commit([update('users/'+employee,{photoPath:'users/'+employee+'/avatar.jpg'}),update('publicProfiles/'+employee,{photoPath:'users/'+employee+'/avatar.jpg'})]);
+  assert.equal((await query({path:'users/'+employee+'/notifications'})).length,1);
   await rpc('respondInvitation',{storeId:'shop',invitationId:'i1',accept:true});
   await rpc('respondInvitation',{storeId:'shop',invitationId:'i1',accept:true});
   await assert.rejects(()=>commit([update('stores/shop/products/p1',{salePriceCents:1})]));
   await assert.rejects(()=>commit([update('stores/shop/members/'+employee,{permissions:['members']})]));
   await as(owner);await commit([update('stores/shop/members/'+employee,{permissions:['receptions'],updatedAt:1})]);
+  assert.equal((await doc('stores/shop/members/'+employee)).photoPath,'users/'+employee+'/avatar.jpg');
+  await assert.rejects(()=>commit([update('stores/shop/members/'+employee,{photoPath:'users/'+owner+'/avatar.jpg'})]));
+  await commit([update('stores/shop/members/'+employee,{active:false})]);
+  await commit([update('stores/shop/members/'+employee,{active:true})]);
  });
  await t.test('sale assigns number and stock exactly once after a lost response',async()=>{
   await as(employee);const id=randomUUID(),ops=[set('stores/shop/orders/o1',sale(employee))];
