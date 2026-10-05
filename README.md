@@ -16,6 +16,8 @@ Backend para la app Android del repositorio hermano control_tienda_frontend. Una
 
 Crear un archivo nuevo en supabase/migrations con versión posterior a la última (supabase migration new nombre, o AAAAMMDDHHMMSS_nombre.sql). Nunca editar ni borrar una migración que ya llegó a develop: al pasar a master Supabase la aplica y después ignora cualquier cambio en ella. npm run migrations:check lo valida y CI lo exige.
 
+La migración `20261005000004_member_profile_photos.sql` corrige el rechazo de membresías con foto de perfil: el avatar pertenece a `users/{uid}`, no a la carpeta de la tienda. Permite crear la tienda con un dueño que tiene foto y modificar actividad o permisos de miembros con avatar. Se aplica después de las tres migraciones existentes y no cambia sus datos ni los permisos por rol.
+
 ## Validación local
 
 npm test ejecuta las migraciones reales en PostgreSQL WASM (PGlite), con los esquemas de Auth y Storage simulados. Verifica RLS, roles, lotes atómicos, ventas idempotentes, stock, recepciones, invitaciones, bloqueo y eliminación de cuentas. No sustituye una prueba contra Auth/Storage reales.
