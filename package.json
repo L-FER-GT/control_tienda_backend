@@ -10,15 +10,14 @@
     "test": "node --test tests/supabase.test.mjs",
     "build": "node scripts/check-config.mjs --allow-empty",
     "config:check": "node scripts/check-config.mjs",
-    "db:migrate": "node scripts/migrate.mjs",
+    "migrations:check": "node scripts/check-migrations.mjs",
     "superadmin:seed": "node scripts/seed-superadmin.mjs",
     "storage:cleanup": "node scripts/cleanup-storage.mjs",
     "backup": "node scripts/backup.mjs",
     "test:live": "node scripts/smoke.mjs"
   },
   "dependencies": {
-    "dotenv": "^18.0.5",
-    "pg": "^8.16.3"
+    "dotenv": "^18.0.5"
   },
   "devDependencies": {
     "@electric-sql/pglite": "^0.3.14"

@@ -1,3 +1,6 @@
+# Supabase CLI local. La integración GitHub solo lleva a producción las migraciones y los
+# buckets/Edge Functions declarados aquí; [api] y [auth] se ignoran y se configuran en el panel.
+# El bucket media lo crea una migración (con sus políticas): no declararlo también aquí.
 project_id = "control-tienda"
 
 [api]

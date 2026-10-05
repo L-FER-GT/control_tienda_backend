@@ -3,7 +3,6 @@ export const config = {
  url:(process.env.SUPABASE_URL??'').replace(/\/$/,''),
  anon:process.env.SUPABASE_ANON_KEY??'',
  secret:process.env.SUPABASE_SERVICE_ROLE_KEY??'',
- db:process.env.SUPABASE_DB_URL??'',
  bucket:process.env.SUPABASE_STORAGE_BUCKET||'media',
 };
 export function requireValues(...keys){for(const key of keys) if(!process.env[key]?.trim()) throw new Error(`Completa ${key} en .env`)}

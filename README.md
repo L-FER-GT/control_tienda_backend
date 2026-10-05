@@ -7,10 +7,14 @@ Backend para la app Android del repositorio hermano control_tienda_frontend. Una
 1. Crear un proyecto Free siguiendo [la guía](docs/02-crear-proyecto-supabase.md).
 2. Completar .env a partir de [.env.example](.env.example). El .env local ya está preparado; no contiene credenciales ficticias.
 3. Ejecutar npm ci y npm run config:check.
-4. Ejecutar npm run db:migrate (requiere SUPABASE_DB_URL).
+4. Enlazar este repositorio en Supabase (Project Settings / Integrations / GitHub, directorio `.`, rama develop). Cada push a develop aplica las migraciones nuevas; ver [despliegue](docs/06-despliegue-y-ci-cd.md).
 5. Ejecutar npm run superadmin:seed.
 6. Ejecutar npm run test:live para comprobar el contrato con el proyecto real.
 7. Compilar Android. Si ambos repositorios están juntos, Gradle lee las variables públicas de este .env.
+
+## Cambios en la base de datos
+
+Crear un archivo nuevo en supabase/migrations con versión posterior a la última (supabase migration new nombre, o AAAAMMDDHHMMSS_nombre.sql). Nunca editar ni borrar una migración que ya llegó a develop: Supabase no la vuelve a aplicar. npm run migrations:check lo valida y CI lo exige.
 
 ## Validación local
 

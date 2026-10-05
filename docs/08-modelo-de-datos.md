@@ -6,6 +6,6 @@ Rutas: users/{uid}, publicProfiles/{uid}, userCodes/{code}, users/{uid}/notifica
 
 Las subcolecciones indicadas pertenecen a stores/{id}. Fechas en data son milisegundos UTC. Los importes son enteros en céntimos; cantidades admiten decimales. stock=null significa ilimitado. Un stock negativo es válido para ventas offline. El servidor reemplaza {"$serverTime":true} en campos superiores con su fecha actual.
 
-private.receipts: lotes aplicados por UID e ID de operación; garantiza reintentos idempotentes. private.file_cleanup: archivos reemplazados pendientes de borrado mediante Storage API. private.schema_migrations: control del script de despliegue.
+private.receipts: lotes aplicados por UID e ID de operación; garantiza reintentos idempotentes. private.file_cleanup: archivos reemplazados pendientes de borrado mediante Storage API. supabase_migrations.schema_migrations (de Supabase): migraciones aplicadas por la integración GitHub.
 
 No se envían contraseñas ni claves privilegiadas como documentos. Auth administra identidades UUID. Los códigos públicos de usuario tienen diez dígitos.

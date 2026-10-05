@@ -11,10 +11,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v6
         with:
           node-version: 22
           cache: npm
       - run: npm ci
+      # La integración GitHub de Supabase aplica las migraciones al llegar a develop.
+      - run: npm run migrations:check
+        env:
+          MIGRATIONS_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
       - run: npm test
       - run: npm run build
