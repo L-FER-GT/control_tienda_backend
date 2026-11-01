@@ -17,7 +17,7 @@
     "test:live": "node scripts/smoke.mjs"
   },
   "dependencies": {
-    "dotenv": "^18.0.5"
+    "dotenv": "^18.0.9"
   },
   "devDependencies": {
     "@electric-sql/pglite": "^0.3.14"
